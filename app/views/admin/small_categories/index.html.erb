@@ -1,0 +1,23 @@
+<p><%= link_to "添加小分类" ,new_admin_small_category_path %></p>
+<%= flash[:notice] %>
+<div class="table-c">
+  <table width="50%">
+    <tr>
+      <td style="color: blue">小分类名字</td>
+      <td style="color: blue">所属大分类</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <% @small_category.each do |s| %>
+      <tr>
+        <td><%= s.small_title %></td>
+        <% big = Category.find_by_id(s.category_id) %>
+        <td><%= big.big_title %></td>
+        <td><%= link_to "修改" , edit_admin_small_category_path(s) %></td>
+        <td><%= link_to "删除" ,admin_small_category_path(s),method: :delete,data: {confirm:"确定删除？"} %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>
+<%=  will_paginate @small_category ,:style => " color :blue" %>
+<p>共有<%= @small_category.count %>记录</p>

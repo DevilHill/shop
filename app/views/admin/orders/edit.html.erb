@@ -1,0 +1,24 @@
+
+<%= form_for @order ,:url =>{:action => "update"} do |f| %>
+  <table>
+    <tr>
+      <td>收货地址</td>
+      <% @address = Address.where(:user_id => @order.user_id) %>
+      <td><%=  select_tag "order[address_id]" , options_for_select(@address.collect{|a| [a.detail , a.id] }) %></td>
+    </tr>
+    <tr>
+      <td>订单价钱</td>
+      <td><%= f.text_field :order_price %></td>
+    </tr>
+    <tr>
+      <td>订单状态</td>
+      <td><%= select_tag "order[status]" ,raw("<option value= '1'>未付</option><option value='2'>已付</option>") %></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><%= f.submit(value = "提交") %></td>
+    </tr>
+
+  </table>
+<% end %>
+<%= link_to "返回" ,admin_orders_path %>

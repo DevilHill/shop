@@ -1,0 +1,8 @@
+<ul>
+  <% user = User.find_by_id(@comment.user_id)  %>
+  <li>评论人：<%= user.nickname %></li>
+  <li>评论</li>
+  <li><%= @comment.content %></li>
+  <li>评分:<%= @comment.score %></li>
+</ul>
+<%= link_to "返回" ,admin_comments_path(:product_id => session[:product_id]) %>

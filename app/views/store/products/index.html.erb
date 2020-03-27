@@ -1,0 +1,81 @@
+<div class="buy-order">
+  <div class="buy-imag">
+    <% image = @image[0] %>
+    <div><%= image_tag("/product_image/"+image.photo,width: "400px",height: "300px") %></div>
+    <div style="font-size: 30px;text-align: center"><%= @product.note %></div>
+  </div>
+  <div class="buy-detail">
+    <div class="buy-detail-name">
+      <%= @product.name %>
+    </div>
+    <div class="buy-tag">
+      <%= image_tag('/images/product_detail/pp.png') %>
+    </div>
+      <% comments = @product.comments %>
+    <div class="buy-price"><span style="color: red;font-size: 15px;margin-right: 50px">惊爆价</span><span >￥<%= @product.price %></span></div>
+    <div class="comment-count">累计评价<span style="color: red;font-weight: bold"><%= comments.count %></span></div>
+    <div class="buy-server">
+      <ul>
+        <li style="color: #999999">服务承若</li>
+        <li>正品保证</li>
+        <li>极速退款</li>
+        <li>赠运费险</li>
+        <li>七天无理由退换</li>
+      </ul>
+    </div>
+    <div class="buy-link">
+      <%= link_to(new_store_order_path(:product_id => @product.id)) do %>
+        <div>立即购买</div>
+      <% end %>
+        <div style="color: #EFEFEF;background-color: red" onclick="add_cart(this)">加入购物车<%= hidden_field_tag "add_cart", @product.id %></div>
+    </div>
+  </div>
+</div>
+<div>
+  <% @image.each do |i| %>
+    <%= image_tag("/product_image/"+i.photo,width: "800px") %>
+  <% end %>
+  <%= image_tag("/images/product_detail/price_note.png") %>
+</div>
+<div>
+  <div class="comments-count"><h4>累计评价<%= comments.count %></h4></div>
+  <table class="comments">
+    <tr class="comments-tag">
+      <td>评论</td>
+      <td>用户</td>
+    </tr>
+    <% if @comments.length == 0 %>
+      <tr>
+        <td>此商品暂无评论，赶紧坐沙发！</td>
+        <td></td>
+      </tr>
+    <% else %>
+      <% @comments.each do |c| %>
+        <tr>
+          <td>
+            <div><%= c.content %></div>
+            <div><%= c.created_at.strftime("%Y-%m-%d %H:%M:%S") %></div>
+          </td>
+          <% user = User.find_by_id(c.user_id) %>
+          <% nickname = user.nickname.hash %>
+          <td><%= nickname[0]%><span>***(匿名)</span></td>
+        </tr>
+      <% end %>
+
+      <% end %>
+
+  </table>
+</div>
+<script type="application/javascript">
+    function add_cart(v) {
+        // alert($(v).children("input").val())
+        var product_id = $(v).children("input").val()
+        $.ajax({
+            type:"get",
+            url:"/store/carts/add_cart",
+            data:{product_id:product_id},
+            success: function (data) {
+            }
+        })
+    }
+</script>

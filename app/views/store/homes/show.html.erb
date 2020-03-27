@@ -1,0 +1,62 @@
+<style type="text/css">
+  .product_all{
+    display: flex;
+    flex-flow:row wrap;
+    justify-content: space-between;
+  }
+  .product{
+    width: 235px;
+    height: 300px;
+    /*background-color: red;*/
+    margin-top:20px;
+    border: #ededed solid 1px;
+  }
+  .product:hover{
+    border: red solid 1px;
+  }
+  .product_buy{
+    height: 30px;
+    background-color: red;
+    text-align: center;
+    border: solid red 1px;
+    margin-bottom: 3px;
+    font-size: 17px;
+  }
+  .product_buy:hover{
+    background-color: chocolate;
+    text-decoration: none;
+  }
+  a:hover{
+    text-decoration: none;
+    color: blue;
+    font-weight: bold;
+  }
+</style>
+<div class="product_all">
+  <% unless @product.blank? %>
+    <% @product.each do |p| %>
+      <div class="product">
+        <% image = p.product_images %>
+        <div>
+          <%= link_to(store_products_path(:product_id => p)) do %>
+            <%= image_tag("/product_image/"+image[0].photo,height: '170', width: '235') %>
+          <% end %>
+        </div>
+        <span style="color: red;font-size: 20px;font-weight: bold">￥<%= p.price %></span><span class="favorite">收藏</span>
+        <p>
+          <%= link_to(store_products_path(:product_id => p)) do %>
+          <p class="product_note"><%= p.name %><%= p.note %></p>
+        <% end %>
+        </p>
+        <%= link_to(store_home_path(p)) do %>
+          <div class="product_buy">加入购物车</div>
+        <% end %>
+        <%= link_to(new_store_order_path(:product_id => p)) do %>
+          <div class="product_buy">购买</div>
+        <% end %>
+      </div>
+    <% end %>
+  <% else %>
+    <p>您所搜索的商品不存在！</p>
+  <% end %>
+</div>

@@ -1,0 +1,106 @@
+<script type="application/javascript">
+  function confirm_address(v) {
+      $(".o-address-c")[0].className = "o-address"
+      v.className = "o-address-c"
+      $(".select_address")[0].className = "unselect_address"
+      $(".o-address-c #unselect_address").attr("class","select_address")
+      $("#order_address_id").val($(".select_address").val())
+      $("#order-receiver-end").text($(".o-address-c .address_receiver").text())
+      // alert($(".o-address-c .address_detail").text())
+      $("#order-address-end").text($(".o-address-c .address_detail").text())
+  }
+</script>
+<div class="user-top">
+  <div>
+    <span><%= link_to "商城首页",store_homes_path %></span>
+    <span>Hi,<%= @user.nickname %>!欢迎来到商城</span>
+    <span><%= link_to "购物车" ,store_carts_path %></span>
+    <span><%= link_to "退出" ,store_logout_path ,method: :delete, data: { confirm: "确定退出账户吗？"} %></span>
+  </div>
+</div>
+<div class="order-body">
+  <div class="order-detail">
+    <div class="order-image">
+      <div><%= image_tag("/images/logo/logo.jpg",width: "150px",height: "130px") %></div>
+      <div><%= image_tag("/images/logo/order_process.png") %></div>
+    </div>
+    <h2 style="font-size: 14px">选择收货地址</h2>
+    <div class="order-address">
+      <% unless @addresses.blank? %>
+        <% default_address_id = @default_address.address_id %>
+        <% @addresses.each do |a| %>
+          <% if default_address_id == a.id %>
+            <div class="o-address-c" onclick="confirm_address(this)" id="<%= a.id %>">
+              <div class="addr-hd"><span><span class="address_detail"><%= a.province %><%= a.city %></span>(<span class="address_receiver"><%= a.receiver %></span>收)</span></div>
+              <div style="width: 207px;height: 55px">
+                <span style="font-size: 12px;color: #666666"><span class="address_detail"><%= a.detail %></span></span>
+                <span><%= hidden_field_tag 'unselect_address',a.id,class:"select_address" %></span>
+              </div>
+            </div>
+          <% else %>
+            <div class="o-address" onclick="confirm_address(this)">
+              <div class="addr-hd"><span><span class="address_detail"><%= a.province %><%= a.city %></span>(<span class="address_receiver"><%= a.receiver %></span>收)</span></div>
+              <div style="width: 207px;height: 55px">
+                <span style="font-size: 12px;color: #666666"><span class="address_detail"><%= a.detail %></span></span>
+                <span><%= hidden_field_tag 'unselect_address',a.id,class:"unselect_address" %></span>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      <% else %>
+        <%= link_to "添加地址" %>
+      <% end %>
+    </div>
+    <h2 style="font-size: 14px">确认订单信息</h2>
+    <div class="order-table">
+      <table>
+        <tr class="table-tr">
+          <td><span>商品图片</span></td>
+          <td><span>商品名</span></td>
+          <td><span>商品说明</span></td>
+          <td><span>商品单价</span></td>
+          <td><span>数量</span></td>
+          <td><span>小计</span></td>
+        </tr>
+        <% count = 0 %>
+        <% @carts.each do |c| %>
+          <% product_id = c.product_id %>
+          <% p = Product.find_by_id(product_id) %>
+          <tr class="product_m" id="<%= c.id %>">
+            <% photo = ProductImage.find_by_product_id(product_id) %>
+            <td><%= image_tag("/product_image/"+photo.photo,width: "130px",height: "85px") %></td>
+            <td><span><%= p.name %></span></td>
+            <td><span><%= p.note %></span></td>
+            <td><span id="price_id"><%= p.price %></span></td>
+            <td><span><%= c.num %></span></td>
+            <% amount = p.price * c.num %>
+            <td><span id="amount"><%= amount.round(2) %></span></td>
+            <% count+=amount.round(2) %>
+          </tr>
+        <% end %>
+      </table>
+    </div>
+    <div class="order-end">
+      <div class="order-box">
+        <div class="order-price-tag"><span style="font-weight: bold;font-size: 12px;color: #333333">实付款:</span><span style="color: #999999;font-size: 26px;margin-right: 4px">￥</span><span id="order-price-end"><%= count %></span></div>
+        <div height="19px"><span style="font-weight: bold;font-size: 12px;color: #333333">寄送至:</span><span id="order-address-end"></span></div>
+        <div height="19px"><span style="font-weight: bold;font-size: 12px;color: #333333">收货人:</span><span id="order-receiver-end"></span></div>
+      </div>
+    </div>
+    <div class="order-form">
+      <%= form_for @order ,url: {:action => "create_order"} do |f| %>
+        <%= f.hidden_field :address_id %>
+        <%= f.hidden_field :order_price %>
+        <%= f.hidden_field :status ,value:"1" %>
+        <%#= f.hidden_field :product_id,value: @product.id %>
+        <div class="submit-form"><%= f.submit(value="提交订单") %></div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<script type="application/javascript">
+    $("#order_address_id").val($(".select_address").val())
+    $("#order-receiver-end").text($(".o-address-c .address_receiver").text())
+    $("#order-address-end").text($(".o-address-c .address_detail").text())
+    $("#order_order_price").val(<%= count %>)
+</script>

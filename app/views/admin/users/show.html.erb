@@ -1,0 +1,23 @@
+<p><%= @user.nickname %>地址有</p>
+<p><%= link_to "添加地址" ,new_admin_address_path(:user_id => @user_id) %></p>
+<div class="table-c">
+<table style="width:75%">
+<% @address.each do |a| %>
+    <tr>
+      <td style="color:blue">省</td>
+      <td><%= a.province %></td>
+      <td style="color:blue">市</td>
+      <td><%= a.city %></td>
+      <td style="color:blue">区</td>
+      <td><%= a.region %></td>
+      <td style="color:blue">详细地址</td>
+      <td><%= a.detail %></td>
+      <td style="color:blue">收货人</td>
+      <td><%= a.receiver %></td>
+      <td><%= link_to "修改" ,edit_admin_address_path(a) %></td>
+      <td><%= link_to "删除" ,admin_address_path(a) , method: :delete , data: { confirm: "确定删除？" } %></td>
+    </tr>
+<% end %>
+</table>
+</div>
+<%= link_to "返回" ,admin_users_path %>

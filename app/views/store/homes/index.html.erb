@@ -1,0 +1,85 @@
+<div class="product_all">
+  <% @product.each do |p| %>
+     <div class="product" div="<%= p.id %>">
+       <% images = p.product_images %>
+        <div>
+          <%= link_to(store_products_path(:product_id => p)) do %>
+            <%= image_tag("/product_image/"+String(images[0].photo),height: '170', width: '235') %>
+          <% end %>
+        </div>
+       <div class="favorite-box">
+         <span style="color: red;font-size: 20px;font-weight: bold">￥<%= p.price %></span>
+         <span class="favorite">
+           <% unless @favorite.blank? %>
+             <% if @favorite.find_by_product_id(p.id).blank? %>
+                <%= image_tag("/images/favorite/common.png",onClick:"favorite(this," + p.id.to_s + ")",class: "image-favorite",title:1,id:"favorite"+ p.id.to_s) %>
+             <% else %>
+                <%= image_tag("/images/favorite/favorite.png",onClick:"favorite(this," + p.id.to_s + ")",class: "image-favorite",title:2,id:"favorite"+ p.id.to_s) %>
+             <% end %>
+            <% else %>
+                <%= image_tag("/images/favorite/common.png",onClick:"favorite(this," + p.id.to_s + ")",class: "image-favorite",title:1,id:"favorite"+ p.id.to_s) %>
+            <% end %>
+         </span>
+       </div>
+       <p>
+         <%= link_to(store_products_path(:product_id => p)) do %>
+         <p class="product_note"><%= p.name %><%= p.note %></p>
+         <% end %>
+       </p>
+        <div class="product_buy" onclick="add_cart(this)">加入购物车<%= hidden_field_tag "add_cart", p.id %></div>
+       <%= link_to(new_store_order_path(:product_id => p)) do %>
+         <div class="product_buy">购买</div>
+       <% end %>
+     </div>
+  <% end %>
+</div>
+<script type="application/javascript">
+  function favorite(v,product_id) {
+      // var product_id = $(".product")[0].id
+      var user_id = $(".user_center").attr("title")
+      var favorite_id = $(v).attr("id")
+      if($(".user_center").attr("title") == ""){
+        alert("您还没有登录，请登录")
+          window.location.href="/store/login"
+      }else{
+          if (v.title == 1) {
+              $.ajax(
+                  {
+                      type: "get",
+                      url: '/store/homes/add_favorite',
+                      data: {product_id: product_id, user_id: user_id,favorite_id:favorite_id},
+                      success: function (data) {
+
+                      }
+                  }
+              )
+              // v.src = "/images/favorite/favorite.png"
+              // v.title = 2
+          } else {
+              $.ajax(
+                  {
+                      type: "get",
+                      url: '/store/homes/del_favorite',
+                      data: {product_id: product_id, user_id: user_id,favorite_id:favorite_id},
+                      success: function (data) {
+                      }
+                  }
+              )
+              // v.src = "/images/favorite/common.png"
+              // v.title = 1
+          }
+
+      }
+  }
+  function add_cart(v) {
+      // alert($(v).children("input").val())
+      var product_id = $(v).children("input").val()
+      $.ajax({
+          type:"get",
+          url:"/store/carts/add_cart",
+          data:{product_id:product_id},
+          success: function (data) {
+          }
+      })
+  }
+</script>

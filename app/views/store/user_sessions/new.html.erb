@@ -1,0 +1,23 @@
+
+<center>
+  <div >
+    <table>
+      <%= form_for @user_session ,:url => store_login_path  do |f| %>
+        <tr>
+          <td><%= f.label :账户名 %></td>
+          <td><%= f.text_field :login %></td>
+        </tr>
+        <tr>
+          <td><%= f.label :密码 %></td>
+          <td><%= f.password_field :password %></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><%= f.submit "登录" %></td>
+          <td><%= link_to "注册" ,new_store_user_path %></td>
+        </tr>
+      <% end %>
+
+    </table>
+  </div>
+</center>

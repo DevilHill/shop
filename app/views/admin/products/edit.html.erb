@@ -1,0 +1,46 @@
+<%= form_for @product , url: {:action => "update"} do |f| %>
+  <% error = @product.errors.full_messages %>
+  <% error.each do |msg| %>
+    <p><%= msg %></p>
+  <% end %>
+  <table>
+    <tr>
+      <td>商品名</td>
+      <td><%= f.text_field :name %></td>
+
+    </tr>
+    <tr>
+      <td>详细说明</td>
+      <td><%= f.text_field :note %></td>
+    </tr>
+    <tr>
+      <td>商品价格</td>
+      <td><%= f.text_field :price %></td>
+      <td>￥</td>
+    </tr>
+    <tr>
+      <td>大分类选择</td>
+      <td><%= f.select :big_category_id, Category.all.collect{|i| [i.big_title, i.id]}, {}, {onchange: "get_small_cate()"} %></td>
+      <td>小分类选择</td>
+      <td id="small_cate"><%= f.select :small_category_id, SmallCategory.all.collect{|p| [p.small_title, p.id]} %></td>
+    </tr>
+    <tr>
+      <td><%= f.submit(value = "提交") %></td>
+    </tr>
+  </table>
+
+<% end %>
+<script type="text/javascript">
+    function get_small_cate(){
+        big_id = $("#product_big_category_id").val()
+        $.ajax({
+                type: "get",
+                url:'/admin/products/get_options',
+                data:{big_cate_id: big_id},
+                success: function(data){
+                    // $("#small_category").html(data);
+                }
+            }
+        )
+    }
+</script>

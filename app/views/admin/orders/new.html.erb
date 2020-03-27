@@ -1,0 +1,44 @@
+
+<%= form_for @order ,:url =>{:action => "create"} do |f| %>
+  <% error = @order.errors.full_messages %>
+  <% error.each do |msg| %>
+    <p><%= msg %></p>
+  <% end %>
+<table>
+  <tr>
+    <td>订单用户</td>
+    <td><%= f.select :user_id, User.all.collect{|i| [i.nickname, i.id]}, {}, {onchange: "get_address()"} %></td>
+  </tr>
+  <tr>
+    <td>收货地址</td>
+    <td id="get_address"><%= select_tag "order[address_id]",raw("<option selected='selected'>——请选择用户——</option>")  %></td>
+  </tr>
+  <tr>
+    <td>订单价钱</td>
+    <td><%= f.text_field :order_price %></td>
+  </tr>
+  <tr>
+    <td>订单状态</td>
+    <td><%= select_tag "order[status]" ,raw("<option value= '1'>未付</option><option value='2'>已付</option>") %></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><%= f.submit(value = "提交") %></td>
+  </tr>
+
+</table>
+<% end %>
+
+<script type="text/javascript">
+    function get_address(){
+        var user_id = $("#order_user_id").val()
+        $.ajax({
+                type: "get",
+                url:'/admin/orders/get_address',
+                data:{user_id: user_id},
+                success: function(data){
+                }
+            }
+        )
+    }
+</script>

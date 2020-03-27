@@ -1,0 +1,40 @@
+<%= form_for @administer ,:url => {:action=>'update'} do |f| %>
+  <% if @administer.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@administer.errors.count, "error") %> prohibited this article from being saved:
+      </h2>
+      <ul>
+        <% @administer.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <ul class="formList">
+    <li>
+      <%= f.label :login, "账户名" %>
+      <%= f.text_field :login %>
+    </li>
+    <li>
+      <%= f.label :email, "邮箱" %>
+      <%= f.text_field :email %>
+    </li>
+    <li>
+      <%= f.label :password, "密码" %>
+      <%= f.password_field :password %>
+    </li>
+    <li>
+      <%= f.label :password_confirmation, "确认密码" %>
+      <%= f.password_field :password_confirmation %>
+    </li>
+    <li>
+      <%= f.label :nickname, "昵称" %>
+      <%= f.text_field :nickname %>
+    </li>
+    <li>
+      <%= f.submit "提交" %>
+    </li>
+  </ul>
+<% end %>

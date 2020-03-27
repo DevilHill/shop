@@ -1,0 +1,15 @@
+<% error = @small_category.errors.full_messages %>
+<% error.each do |msg| %>
+  <p><%= msg %></p>
+<% end %>
+<table>
+<%= form_for @small_category , url: {:action => "create"} do |f| %>
+    <tr>
+      <td>小分类名称</td>
+      <td><%= f.text_field :small_title %></td>
+      <td>所属大分类</td>
+      <td><%= f.select :category_id, Category.all.collect{|p| [p.big_title, p.id]} %></td>
+      <td><%= f.submit(value = "提交") %></td>
+    </tr>
+<% end %>
+</table>

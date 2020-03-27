@@ -1,0 +1,24 @@
+<%= form_for @comment ,url: {:action => "update"} do |f| %>
+  <% error = @comment.errors.full_messages %>
+  <% error.each do |msg| %>
+    <p><%= msg %></p>
+  <% end %>
+  <table>
+    <tr>
+      <td>评论人</td>
+      <td><%= f.select :user_id, User.all.collect{|i| [i.nickname, i.id]} %></td>
+    </tr>
+    <tr>
+      <td>内容</td>
+      <td><%= f.text_area :content  %></td>
+    </tr>
+    <tr>
+      <td>评分</td>
+      <td><%= f.text_field :score %></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><%= f.submit "提交" %></td>
+    </tr>
+  </table>
+<% end %>

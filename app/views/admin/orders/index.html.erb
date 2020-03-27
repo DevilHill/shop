@@ -1,0 +1,35 @@
+<%= link_to "添加订单" ,new_admin_order_path %>
+<%= flash[:notice] %>
+<div class="table-c">
+
+  <table width="80%">
+    <tr>
+      <td>订单编号</td>
+      <td>订单用户</td>
+      <td>订单价钱</td>
+      <td>收货地址</td>
+      <td>订单状态</td>
+      <td>修改</td>
+      <td>订单商品</td>
+      <td>删除</td>
+    </tr>
+    <% @order.each do |o| %>
+      <tr>
+        <td><%= o.id %></td>
+        <% user = User.find_by_id(o.user_id) %>
+        <td><%= user.nickname %></td>
+        <td><%= o.order_price %>￥</td>
+        <% address = Address.find_by_id(o.address_id) %>
+        <td><%= address.province + address.city + address.region + address.detail + ",  收货人:" + address.receiver %></td>
+        <% if o.status == 1 %>
+          <td>未付</td>
+        <% else %>
+          <td>已付</td>
+      <% end %>
+        <td><%= link_to "修改" ,edit_admin_order_path(o) %></td>
+        <td><%= link_to "订单商品" ,admin_order_path(o) %></td>
+        <td><%= link_to "删除" ,admin_order_path(o) ,method: :delete ,data:{confirm: "确定删除？"} %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>

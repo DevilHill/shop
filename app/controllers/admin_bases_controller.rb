@@ -1,0 +1,3 @@
+class AdminBasesController < ApplicationController
+
+end

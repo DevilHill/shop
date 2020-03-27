@@ -1,0 +1,128 @@
+<div class="user-top">
+  <div>
+    <span><%= link_to "商城首页",store_homes_path %></span>
+    <span>Hi,<%= @user.nickname %>!欢迎来到商城</span>
+<!--    <span><%#= link_to "购物车" %></span>-->
+    <span><%= link_to "退出" ,store_logout_path ,method: :delete, data: { confirm: "确定退出账户吗？"} %></span>
+  </div>
+</div>
+<div class="cart_body">
+  <div class="search-icon">
+      <div>
+        <%= link_to(store_homes_path) do %>
+          <%= image_tag("/images/logo/logo.jpg",width: "150px",height: "130px") %>
+        <% end %>
+        <span style="font-size: 50px;font-weight: bold;color: red;font-style:italic;font-family: 'YouYuan'">购物车</span>
+      </div>
+      <div class = "search-form">
+        <%= form_tag( "/store/homes/search", method: "get") do  %>
+          <%= search_field_tag :q ,@q,class: "search-box",placeholder:"请输入搜索内容" %>
+          <%= submit_tag "搜索",class: "search-button" %>
+        <% end %>
+      </div>
+    </div>
+  <h2 style="font-size: 14px;font-weight: bold">购物车</h2>
+  <div class="cart_detail">
+    <table>
+      <tr class="table-tr">
+        <td><span>商品图片</span></td>
+        <td><span>商品名</span></td>
+        <td><span>商品单价</span></td>
+        <td><span>数量</span></td>
+        <td><span>小计</span></td>
+        <td><span>移除</span></td>
+      </tr>
+      <% @carts.each do |c| %>
+      <tr class="product_m" id="cart<%= c.id %>">
+        <% photo = ProductImage.find_by_product_id(c.product_id) %>
+        <% product = Product.find_by_id(c.product_id) %>
+        <td><%= image_tag("/product_image/"+photo.photo,width: "130px",height: "85px") %></td>
+        <td><span><%= product.name %></span></td>
+        <td><span class="product_price"><%= product.price %></span></td>
+        <td>
+          <input type="button" value="-"  onclick="sub(this)" data-cart="cart<%= c.id %>" data-id="<%= c.id %>">
+          <input type="text" class="num" readonly="readonly" value="<%= c.num %>">
+          <input type="button" value="+" onclick="add(this)" data-cart="cart<%= c.id %>" data-id="<%= c.id %>"><br>
+          <span class="tips" style="color: red"></span>
+        </td>
+        <% sum = product.price * c.num %>
+        <td width="200px"><span>￥</span><span class="amount" id="sum<%= c.id %>"><%= sum.round(2) %></span></td>
+        <td>
+          <%= link_to store_cart_path(c),method: :delete,data:{confirm:"确定将商品移除购物车？"} do %>
+            <%= image_tag("/images/icon/delect.png", width: "30px",height: "30px") %>
+          <% end %>
+        </td>
+      </tr>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+  <h2 style="font-size: 14px;font-weight: bold">结算</h2>
+  <div class="account_box">
+    <div class="account_data">
+      <%= link_to(confirm_order_store_orders_path) do %>
+        <div class="account_button">结算</div>
+      <% end %>
+      <span class="account_price">0.00</span>
+      <span class="symbol">&nbsp;￥</span>
+      <span class="txt" onclick="test()">合计：</span>
+    </div>
+  </div>
+</div>
+<script type="application/javascript">
+    function sub(v) {
+        var cart_id = $(v).attr("data-cart")
+        var id = $(v).attr("data-id")
+        var num_v = $("#" + cart_id +" .num").val()
+        if(num_v == 1){
+            $("#" + cart_id +" .tips").html("最低为一件")
+        }else{
+            var num = $("#" + cart_id +" .num").val()
+            var count = Number(num) - 1
+            $("#" + cart_id +" .num").val(count)
+            var sum = Number($("#" + cart_id +" .product_price").html()) * count
+            $("#" + cart_id +" .amount").html(sum.toFixed(2))
+            $.ajax({
+                type: "get",
+                url: "/store/carts/sub_num",
+                data:{num:count,id:id},
+                success: function (data) {
+                }
+            })
+        }
+        account_price()
+    }
+    function add(v) {
+        var cart_id = $(v).attr("data-cart")
+        var id = $(v).attr("data-id")
+        var num = $("#" + cart_id +" .num").val()
+        var count = Number(num) + 1
+        $("#" + cart_id +" .num").val(count)
+        $("#" + cart_id +" .tips").html("")
+        var product_price =  $("#" + cart_id +" .product_price").text()
+        var sum = Number(product_price) * count
+        $("#" + cart_id +" .amount").html(sum.toFixed(2))
+        $.ajax({
+            type: "get",
+            url: "/store/carts/add_num",
+            data:{num:count,id:id},
+            success: function (data) {
+            }
+        })
+        account_price()
+    }
+
+        // alert($(".product_m .amount")[0].id)
+    function account_price() {
+        var len = $(".product_m .amount").length
+        var amount = 0
+        for(var i = 0;i <= len-1;i++){
+            var sum_id = $(".product_m .amount")[i].id
+            amount += Number($("#" + sum_id).text())
+        }
+        $(".account_price").html(amount.toFixed(2))
+    }
+    account_price()
+
+
+</script>

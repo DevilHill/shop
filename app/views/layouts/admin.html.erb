@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>商城后台管理系统</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%#= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <style>
+    li{
+      list-style-type: none;
+    }
+    #menu {
+
+      margin: 30px auto 0px;
+      height: 45px;
+      background-color: #030e11;
+    }
+    #menu li{
+      float: left;
+      width: 92px;
+      line-height:39px;
+      text-align: center;
+      position:relative;
+      border:none;
+    }
+    #menu li a {
+      font-size:16px; color: #e6f8e9;
+      display:block;
+      outline:0;
+      text-decoration:none;
+    }
+    #menu li:hover a {
+      color: #ff0000; /*导航栏文字颜色 */
+    }
+    #menu li:hover .dropdown_1column {
+      left:0px;
+      top:38px;
+    }
+    .dropdown_1column{ /* 下拉菜单边框颜色*/
+      margin: 0px auto;
+      float: left;
+      position: absolute;
+      left: -999em;
+      text-align: left;
+      border: 1px solid #066591;
+      border-top: none;
+      background: #F4F4F4;
+      width: 140px;
+    }
+    #menu li:hover div a { /* 下拉菜单文字颜色*/
+      font-size:12px
+    ;color:#444;
+    }
+
+    #menu li:hover div a:hover{color:#21910e;} /*下拉带单鼠标停留颜色*/
+
+    #menu li ul {
+      list-style:none;padding:10px 5px;
+      margin:0;
+    }
+    #menu li ul li {
+      font-size:12px;
+      line-height:26px;
+      position:relative;
+      padding:0;margin:0;
+      float:none;
+      text-align:left;
+      width:130px;
+    }
+    #menu li ul li:hover {
+      background:none;
+      border:none;padding:0;
+      margin:0;
+    }
+    .table-c table{background:black}
+    .table-c table td{background:white}
+  </style>
+</head>
+
+
+<body>
+<div id="menu">
+  <ul>
+    <li><%= link_to "账号管理" ,admin_administers_path,class:"dorp" %>
+      <div class="dropdown_1column">
+        <div class="col_1">
+          <ul class="simple">
+            <li><%= link_to "管理员账号管理" ,admin_administers_path %></li>
+            <li><%= link_to "用户账号管理" ,admin_users_path %></li>
+          </ul>
+        </div>
+      </div>
+    </li>
+    <li><%= link_to "分类管理" ,admin_categories_path,class:"dorp" %>
+      <div class="dropdown_1column">
+        <div class="col_1">
+          <ul class="simple">
+            <li><%= link_to "大分类" ,admin_categories_path %></li>
+            <li><%= link_to "小分类" ,admin_small_categories_path %></li>
+          </ul>
+        </div>
+      </div>
+    </li>
+    <li><%= link_to "商品管理" , admin_products_path %></li>
+    <li><%= link_to "订单管理" ,admin_orders_path %></li>
+    <li><%= link_to "退出系统" ,admin_logout_path, method: :delete  %></li>
+  </ul>
+</div>
+<%= yield %>
+</body>
+</html>

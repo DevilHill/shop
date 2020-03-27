@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>欢迎进入商城</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <meta charset = "utf-8">
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%#= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+  <!-- 使用CSS样式来控制div布局 -->
+  <style type="text/css">
+    /*定义全局的div布局*/
+    div#global{
+      /*设置宽度，设置百分比可以根据浏览器自适应宽度*/
+      width: 1210px;
+      /*设置高度，950px是设置是实体高度，不能自适应的*/
+      height: 800px;
+      /*设置背景颜色，方便区分布局*/
+      /*               background-color: silver; */
+      margin: auto;
+    }
+    /*定义头部布局，前面的div可以不用写，#号前面默认有个id，凡事定义了id的标签，都可以用#号来表示*/
+    #heading{
+      width: 100%;
+      height: 200px;
+      /*background-color: #BB80F7;*/
+    }
+    #content_menu{
+      width: 210px;
+      height: 1500px;
+      /*background-color: #C5E9F3;*/
+      /*定义浮动，不定义的话，界面会乱*/
+      float: left;
+    }
+    #content_body{
+      width: 1000px;
+      /*height: 1500px;*/
+      /*background-color: #F7575d;*/
+      float: right;
+    }
+    #floor{
+      /*删除浮动，不然会被其他的浮动给遮住*/
+      clear: both;
+      height: 100px;
+      background-color: lightslategray;
+      color: #EFEFEF;
+    }
+
+  </style>
+</head>
+<!--菜单css start-->
+<style type="text/css">
+  /* Remove margin padding */
+  body,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,pre,form,fieldset,legend,button,input,textarea,th,td { margin:0; padding:0; }
+
+  /* Default Font */
+  body,button,input,select,textarea { font:12px/1.5 \5b8b\4f53,arial,sans-serif; }
+  h1,h2,h3,h4,h5,h6 { font-size:100%; }
+  address,cite,dfn,em,var { font-style:normal; }
+  code,kbd,pre,samp { font-family:courier new,courier,monospace; }
+  small { font-size:12px; }
+  ul,ol { list-style:none; }
+  a { text-decoration:none; }
+  a:hover { text-decoration:underline; }
+  sup { vertical-align:text-top; }
+  sub { vertical-align:text-bottom; }
+  legend { color:#000; }
+  fieldset,img { border:0; }
+  button,input,select,textarea{ font-size:100%; }
+  table { border-collapse:collapse; border-spacing:0; }
+
+  .col-main{ float:left; width:100%; min-height:1px; }
+  .col-sub,.col-extra { float:left; }
+  .layout:after,.main-wrap:after,.col-sub:after,.col-extra:after { content:'\20'; display:block; height:0; clear:both; }
+  .layout,.main-wrap,.col-sub,.col-extra { zoom:1; }
+
+  /* Common Features */
+  .hidden { display:none; }
+  .invisible { visibility:hidden; }
+
+  /* Remove Float */
+  .clear { display:block; height:0; overflow:hidden; clear:both; }
+  .clearfix:after { content:'\20'; display:block; height:0; clear:both; }
+  .clearfix { *zoom:1; }
+
+  /* For non ie browsers also display the vertical scroll bar by default, to prevent the flicker caused by the scroll bar */
+  html { overflow-y:scroll; }
+
+  /* Default link styles */
+  a:link,a:visited { text-decoration:none; }
+  a:hover,a:active { text-decoration:underline; }
+
+  body { height:1500px; }
+
+  .top { padding-top:80px; }
+  .menu { position:relative; width:1210px; margin:0px auto; height:40px; background-color:#E4393C;}
+  .menu div { position:absolute; top:0px; height:40px; font-family:"Microsoft Yahei"; }
+  .menu .all-sort { left:0px; width:210px; text-align:center; font-size:14px; }
+  .menu .all-sort a { color:#FFF; display:block; width:100%; height:100%; line-height:40px; }
+  .menu .ad { right:0px; width:141px; }
+  .menu .nav { left:210px; }
+  .menu .nav ul li { float:left; width:85px; line-height:40px; }
+  .menu .nav ul li a { display:block; width:100%; color:#FFF; text-align:center; font:700 15px/40px "Microsoft Yahei"; }
+  .menu .nav ul li a:hover, .menu .nav ul li a.current { background:#A40000; text-decoration:none; }
+
+  .wrap { width:1210px; margin:0px auto; }
+  .all-sort-list { position:relative; width:203px; border:2px solid #E4393C; border-top:none; padding:3px 3px 3px 0px; background:#FAFAFA; }
+  .all-sort-list .item { height:30px; border-top:1px solid #FFFFFF; }
+  .all-sort-list .item.bo { border-top:none; }
+  .all-sort-list .item h3 { height:28px; line-height:28px; border:1px; font-size:14px; font-weight:normal; width:199px; overflow:hidden; }
+  .all-sort-list .hover h3 { position:relative; z-index:13; background:#FFF; border-color:#DDD; border-width:1px 0px; border-style:solid; }
+  .all-sort-list .item span { padding:0px 5px; color:#A40000; font-family:"\5B8B\4F53"; }
+  .all-sort-list .item a { color:#000; text-decoration:none; }
+  .all-sort-list .item a:hover { font-weight:bold; color:#E4393C; }
+
+
+  .all-sort-list .item-list {
+    display:none;
+    position:absolute;
+    width:705px;
+    min-height:200px;
+    _height:200px;
+    background:#FFF;
+    left:198px;
+    box-shadow:0px 0px 10px #DDDDDD;
+    border:1px solid #DDD;
+    top:3px;
+    z-index:10;
+  }
+  .all-sort-list .item-list .close {
+    position:absolute;
+    width:26px;
+    height:26px;
+    color:#FFFFFF;
+    cursor:pointer;
+    top:-1px;
+    right:-26px;
+    font-size:20px;
+    line-height:20px;
+    text-align:center;
+    font-family:"Microsoft Yahei";
+    background:rgba(0, 0, 0, 0.6);
+    background-color:transparent\9;
+    filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=1, startColorstr='#60000000', endColorstr='#60000000');
+  }
+
+  .item-list .subitem { float:left; width:477px; padding:0px 4px 0px 8px; }
+  .item-list .subitem dl { border-top:1px solid #EEE; padding:6px 0px; overflow:hidden; zoom:1; }
+  .item-list .subitem .fore1 { border-top:none; }
+  .item-list .subitem dt { float:left; width:54px; line-height:22px; text-align:right; padding:3px 6px 0px 0px; font-weight:700; color:#E4393C; }
+  .item-list .subitem dt a { color:#E4393C; text-decoration:underline; }
+  .item-list .subitem dd { float:left; width:415px; padding:3px 0px 0px; overflow:hidden; }
+  .item-list .subitem dd em { float:left; height:14px; line-height:14px; padding:0px 8px; margin-top:5px; border-left:1px solid #CCC; }
+
+</style>
+<!--菜单css end-->
+<body>
+<div class="user-top">
+  <div>
+    <span><%= link_to "商城首页",store_homes_path %></span>
+    <% unless @current_user.blank? %>
+      <span>Hi,<%= @current_user.nickname %>!欢迎来到商城</span>
+    <% else %>
+      <span>您还没登录，请<%= link_to "登录" ,store_login_path %></span>
+    <% end %>
+    <span><%= link_to "购物车" ,store_carts_path %></span>
+    <span><%= link_to "退出" ,store_logout_path ,method: :delete, data: { confirm: "确定退出账户吗？"} %></span>
+  </div>
+</div>
+<!-- 在这里控制全局的页面，定义div的id是"global" -->
+<div id="global">
+  <!--  头部布局-->
+  <div id="heading">
+    <div class="search-icon">
+      <div>
+        <%= link_to(store_homes_path) do %>
+          <%= image_tag("/images/logo/logo.jpg",width: "150px",height: "130px") %>
+        <% end %>
+      </div>
+      <div class = "search-form">
+        <%= form_tag( "/store/homes/search", method: "get") do  %>
+          <%= search_field_tag :q ,@q,class: "search-box",placeholder:"请输入搜索内容" %>
+          <%= submit_tag "搜索",class: "search-button" %>
+        <% end %>
+      </div>
+    </div>
+    <div class="menu">
+      <div class="all-sort"><h2><a href="">全部商品分类</a></h2></div>
+      <div class="ad">
+        <a href="">
+          <div style="width:141px; height:40px;text-align:center ;font-size: 15px;font-weight: bold;color: #EFEFEF ">
+            <% unless @current_user.blank? %>
+              <%= link_to "个人中心",store_homes_path,class:"user_center",id:@current_user.id,title: @current_user.id %>
+            <% else %>
+              <%= link_to "请登录" ,store_login_path %>
+            <% end %>
+          </div>
+          <!--          <div style="width:141px; height:40px;text-align:center "> 个人中心</div>-->
+          <!--          <img src="images/rBEhVlJEA84IAAAAAAAZY9Mm2-UAADmFQNaVy4AABl7123.jpg" width="141" height="40" />-->
+        </a>
+      </div>
+      <div class="nav">
+        <ul class="clearfix">
+          <li><%= link_to "首页" ,store_homes_path,class:"current" %></li>
+          <li><%= link_to "服装城" %></li>
+          <li><%= link_to "京东超市" %></li>
+          <li><%= link_to "团购" %></li>
+          <li><%= link_to "拍卖" %></li>
+          <li><% link_to "在线游戏" %></li>
+        </ul>
+      </div></div>
+  </div>
+  <div id="content_menu">
+    <!--所有分类 Start-->
+    <div class="wrap">
+      <div class="all-sort-list">
+        <!--        <div class="item bo">
+                  <h3><span>·</span><a href="">图书</a>、<a href="">音像</a>、<a href="">数字商品</a></h3>
+                  <div class="item-list clearfix">
+                    <div class="close">x</div>
+                    <div class="subitem">
+                      <dl class="fore1">
+                        <dt><a href="#">电子书0</a></dt>
+                        <dd><em><a href="#">免费</a></em><em><a href="#">小说</a></em><em><a href="#">励志与成功</a></em><em><a href="#">婚恋/两性</a></em><em><a href="#">文学</a></em><em><a href="#">经管</a></em><em><a href="#">畅读VIP</a></em></dd>
+                      </dl>
+                      <dl class="fore2">
+                        <dt><a href="#">数字音乐</a></dt>
+                        <dd><em><a href="#">通俗流行</a></em><em><a href="#">古典音乐</a></em><em><a href="#">摇滚说唱</a></em><em><a href="#">爵士蓝调</a></em><em><a href="#">乡村民谣</a></em><em><a href="#">有声读物</a></em></dd>
+                      </dl>
+                      <dl class="fore3">
+                        <dt><a href="#">音像</a></dt>
+                        <dd><em><a href="#">音乐</a></em><em><a href="#">影视</a></em><em><a href="#">教育音像</a></em><em><a href="#">游戏</a></em></dd>
+                      </dl>
+                      <dl class="fore4">
+                        <dt>文艺</dt>
+                        <dd><em><a href="#">小说</a></em><em><a href="#">文学</a></em><em><a href="#">青春文学</a></em><em><a href="#">传记</a></em><em><a href="#">艺术</a></em></dd>
+                      </dl>
+                      <dl class="fore5">
+                        <dt>人文社科</dt>
+                        <dd><em><a href="#">历史</a></em><em><a href="#">心理学</a></em><em><a href="#">政治/军事</a></em><em><a href="#">国学/古籍</a></em><em><a href="#">哲学/宗教</a></em><em><a href="#">社会科学</a></em></dd>
+                      </dl>
+                      <dl class="fore6">
+                        <dt>经管励志</dt>
+                        <dd><em><a href="#">经济</a></em><em><a href="#">金融与投资</a></em><em><a href="#">管理</a></em><em><a href="#">励志与成功</a></em></dd>
+                      </dl>
+                      <dl class="fore7">
+                        <dt>生活</dt>
+                        <dd><em><a href="#">家庭与育儿</a></em><em><a href="#">旅游/地图</a></em><em><a href="#">烹饪/美食</a></em><em><a href="#">时尚/美妆</a></em><em><a href="#">家居</a></em><em><a href="#">婚恋与两性</a></em><em><a href="#">娱乐/休闲</a></em><em><a href="#">健身与保健</a></em><em><a href="#">动漫/幽默</a></em><em><a href="#">体育/运动</a></em></dd>
+                      </dl>
+                      <dl class="fore8">
+                        <dt>科技</dt>
+                        <dd><em><a href="#">科普</a></em><em><a href="#">IT</a></em><em><a href="#">建筑</a></em><em><a href="#">医学</a></em><em><a href="#">工业技术</a></em><em><a href="#">电子/通信</a></em><em><a href="#">农林</a></em><em><a href="#">科学与自然</a></em></dd>
+                      </dl>
+                    </div>
+
+                  </div>
+                </div>-->
+        <% category = Category.all %>
+        <% category.each do |c| %>
+          <div class="item">
+            <h3><span>·</span><a href=""><%= c.big_title %></a></h3>
+            <div class="item-list clearfix">
+              <div class="close">x</div>
+              <div class="subitem">
+                <% small_category = SmallCategory.where(:category => c.id) %>
+                <% small_category.each do |s| %>
+                  <dl class="fore1">
+                    <dt><%= link_to s.small_title ,store_home_path(s) %></dt>
+                  </dl>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <!--所有分类 End-->
+  </div>
+  <div id="content_body">
+    <%= yield %>
+  </div>
+  <div id="floor"><%= image_tag("/images/bottom/bottom.png") %></div>
+</div>
+</body>
+<!-- 菜单js  start -->
+<script type="text/javascript">
+    $('.all-sort-list > .item').hover(function(){
+        var eq = $('.all-sort-list > .item').index(this),				//获取当前滑过是第几个元素
+            h = $('.all-sort-list').offset().top,						//获取当前下拉菜单距离窗口多少像素
+            s = $(window).scrollTop(),									//获取游览器滚动了多少高度
+            i = $(this).offset().top,									//当前元素滑过距离窗口多少像素
+            item = $(this).children('.item-list').height(),				//下拉菜单子类内容容器的高度
+            sort = $('.all-sort-list').height();						//父类分类列表容器的高度
+
+        if ( item < sort ){												//如果子类的高度小于父类的高度
+            if ( eq == 0 ){
+                $(this).children('.item-list').css('top', (i-h));
+            } else {
+                $(this).children('.item-list').css('top', (i-h)+1);
+            }
+        } else {
+            if ( s > h ) {												//判断子类的显示位置，如果滚动的高度大于所有分类列表容器的高度
+                if ( i-s > 0 ){											//则 继续判断当前滑过容器的位置 是否有一半超出窗口一半在窗口内显示的Bug,
+                    $(this).children('.item-list').css('top', (s-h)+2 );
+                } else {
+                    $(this).children('.item-list').css('top', (s-h)-(-(i-s))+2 );
+                }
+            } else {
+                $(this).children('.item-list').css('top', 3 );
+            }
+        }
+
+        $(this).addClass('hover');
+        $(this).children('.item-list').css('display','block');
+    },function(){
+        $(this).removeClass('hover');
+        $(this).children('.item-list').css('display','none');
+    });
+
+    $('.item > .item-list > .close').click(function(){
+        $(this).parent().parent().removeClass('hover');
+        $(this).parent().hide();
+    });
+</script>
+<!-- 菜单js  end -->
+</html>

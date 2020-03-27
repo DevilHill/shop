@@ -1,0 +1,30 @@
+
+  <%= form_for @address , :url => {:action=>'create'} do |f| %>
+  <table>
+    <tr>
+      <td>省</td>
+      <td><%= f.text_field :province %></td>
+    </tr>
+    <tr>
+      <td>市</td>
+      <td><%= f.text_field :city %></td>
+    </tr>
+    <tr>
+      <td>区</td>
+      <td><%= f.text_field :region %></td>
+    </tr>
+    <tr>
+      <td>详细住址</td>
+      <td><%= f.text_area :detail %></td>
+    </tr>
+    <tr>
+      <td>收货人</td>
+      <td><%= f.text_field :receiver %></td>
+    </tr>
+    <tr>
+      <td><%= f.hidden_field :user_id ,:value => @user_id %></td>
+      <td><%= f.submit(value = "提交") %></td>
+    </tr>
+
+  </table>
+  <% end %>

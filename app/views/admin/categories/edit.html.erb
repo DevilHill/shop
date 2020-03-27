@@ -1,0 +1,13 @@
+<%= form_for @category ,url: {:action => 'update'} do |f| %>
+  <% error = @category.errors.full_messages %>
+  <% error.each do |msg| %>
+    <p><%= msg %></p>
+  <% end %>
+  <table>
+    <tr>
+      <td>大分类的名字</td>
+      <td><%= f.text_field :big_title %></td>
+      <td><%= f.submit(value = "提交") %></td>
+    </tr>
+  </table>
+<% end %>

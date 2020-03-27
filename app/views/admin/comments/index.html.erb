@@ -1,0 +1,26 @@
+<p><%= link_to '添加评论' ,new_admin_comment_path(:product_id =>@product_id) %></p>
+<div class="table-c">
+<table width="70%">
+  <tr>
+    <td>评论人</td>
+    <td>评论</td>
+    <td>评分</td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+<% @comment.each do |c| %>
+  <% user = User.find_by_id(c.user_id)  %>
+    <tr>
+      <td><%= user.nickname %></td>
+      <td><%= c.content %></td>
+      <td><%= c.score %></td>
+      <td><%= link_to "修改" ,edit_admin_comment_path(c) %></td>
+      <td><%= link_to "详细" ,admin_comment_path(c) %></td>
+      <td><%= link_to "删除" ,admin_comment_path(c) ,method: :delete ,data:{confirm: "确定删除？"} %></td>
+    </tr>
+<% end %>
+
+</table>
+</div>
+<%= link_to "返回" ,admin_products_path%>

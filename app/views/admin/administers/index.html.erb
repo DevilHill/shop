@@ -1,0 +1,27 @@
+
+<%= link_to "添加管理员"  ,new_admin_administer_path %>
+
+<%#= link_to "退出系统" ,admin_logout_path, method: :delete %>
+<div class="table-c">
+<table style="width:75% ; text-align: center">
+  <tr>
+    <td>用户名</td>
+    <td>邮箱</td>
+    <td>昵称</td>
+    <td></td>
+    <td></td>
+  </tr>
+<% @administer.each do |a| %>
+    <tr>
+      <td><%= a.login %> </td>
+      <td><%= a.email %></td>
+      <td><%= a.nickname %></td>
+      <td><%= link_to "修改" , edit_admin_administer_path(a) %></td>
+      <td><%= link_to "删除" , admin_administer_path(a) , method: :delete , data: { confirm: "确定删除？" } %></td>
+    </tr>
+<% end %>
+</table>
+  <%=  will_paginate @administer ,:style => "color :blue" %>
+</div>
+
+<span>共有<%= @administer.count %>条记录</span>

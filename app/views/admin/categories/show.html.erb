@@ -1,0 +1,15 @@
+<p><%= @category.big_title %></p>
+<div class="table-c">
+  <table width="30%">
+    <% @small_category.each do |s| %>
+    <tr>
+      <td style="color: blue">小分类名字</td>
+      <td><%= s.small_title %></td>
+      <td><%= link_to "修改" , edit_admin_small_category_path(s) %></td>
+      <td><%= link_to "删除" ,admin_small_category_path(s),method: :delete,data: {confirm:"确定删除？"} %></td>
+    </tr>
+    <% end %>
+  </table>
+</div>
+<p>共有<%= @small_category.count %>条记录</p>
+<%= link_to "返回" ,admin_categories_path %>

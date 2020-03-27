@@ -1,0 +1,26 @@
+
+<%= form_for :product_image ,:html => {:multipart => true}, url: {:action => "create"} do |f| %>
+  <%= f.hidden_field :product_id,:value =>@product_id %>
+  <%#= image_tag(@image.photo.url) if @image.photo? %>
+  <img id="img_prev" src="/images/icon/photo_icon.png" alt="your image" width="30px" height="30px" />
+  <%= f.file_field :photo ,:onchange => "readURL(this)"%>
+  <%= f.hidden_field :photo_cache %>
+<%= f.submit "上传" %>
+<% end %>
+
+
+<script type="text/javascript">
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+             var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#img_prev')
+                    .attr('src', e.target.result)
+                    .width(200)
+                    .height(150);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>

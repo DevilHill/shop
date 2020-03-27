@@ -1,0 +1,80 @@
+<%= form_for @product ,:html => {:multipart => true}, url: {:action => "create"} do |f| %>
+  <% error = @product.errors.full_messages %>
+  <% error.each do |msg| %>
+    <p><%= msg %></p>
+    <% end %>
+  <table>
+    <tr>
+      <td>商品名</td>
+      <td><%= f.text_field :name %></td>
+
+    </tr>
+    <tr>
+      <td>详细说明</td>
+      <td><%= f.text_field :note %></td>
+    </tr>
+    <tr>
+      <td>商品价格</td>
+      <td><%= f.text_field :price %></td>
+      <td>￥</td>
+    </tr>
+    <tr>
+      <td>大分类选择</td>
+      <td><%= f.select :big_category_id, Category.all.collect{|i| [i.big_title, i.id]}, {}, {onchange: "get_small_cate()"} %></td>
+      <td>小分类选择</td>
+      <td id="small_cate"><%= f.select :small_category_id,""  %></td>
+    </tr>
+    <tr>
+      <td><img id="img_prev" src="/images/icon/photo_icon.png" alt="your image" width="30px" height="30px" /></td>
+      <td><a class="file_input">选择图片<%= f.file_field :photo %></a></td>
+      <td id="img_cache"><%= f.hidden_field  :hidden_image %></td>
+    </tr>
+    <tr>
+      <td><%#= hidden_field_tag "product[photo_cache]" ,session[:photo_file] %></td>
+      <td><%= f.submit "提交" %></td>
+    </tr>
+  </table>
+<% end %>
+<script type="text/javascript">
+    function get_small_cate(){
+        big_id = $("#product_big_category_id").val()
+        $.ajax({
+                type: "get",
+                url:'/admin/products/get_options',
+                data:{big_cate_id: big_id},
+                success: function(data){
+                    // $("#small_category").html(data);
+                }
+            }
+        )
+    }
+    $("#product_photo").change(function(){
+        var file = this.files[0];
+        var fordata = new FormData();
+        var type = file.type.split("/"); //检查文件类型
+        if(type[0] != "image"){
+            alert("请选择图片");
+            return false;
+        }
+        //fordata.append("action","UploadVMKImagePath");
+        fordata.append("file",file);
+        var data = fordata;
+        $.ajax({
+            url: "/admin/products/upimages",
+            data: data,
+            type: "Post",
+            //dataType: "json",
+            cache: false,//上传文件无需缓存
+            processData: false,//用于对data参数进行序列化处理 这里必须false
+            contentType: false,
+            success: function(result){
+                alert("上传完成");
+            },
+        })
+    })
+    if ($("#product_hidden_image").val() == ""){
+        $("#img_prev").src = "/images/icon/photo_icon.png";
+    }else{
+        $("#img_prev").attr("src","/tmp_images/"+$("#product_hidden_image").val());
+    }
+</script>

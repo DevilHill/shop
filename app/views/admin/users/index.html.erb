@@ -1,0 +1,25 @@
+<%= link_to "添加用户" , new_admin_user_path %>
+<div class="table-c">
+<table style="width:75% ;text-align: center">
+  <tr>
+    <td>昵称</td>
+    <td>用户名</td>
+    <td>邮箱</td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <% @user.each do |u| %>
+  <tr>
+    <td><%= u.nickname %></td>
+    <td><%= u.login %></td>
+    <td><%= u.email %></td>
+    <td><%= link_to "修改" ,edit_admin_user_path(u) %></td>
+    <td><%= link_to "删除" ,admin_user_path(u) , method: :delete , data: { confirm: "确定删除？" } %></td>
+    <td><%= link_to "地址管理" ,admin_user_path(u) %></td>
+  </tr>
+  <% end %>
+</table>
+<%=  will_paginate @user ,:style => " color :blue" %>
+</div>
+<span>共有<%= @user.count %>条记录</span>

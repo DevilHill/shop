@@ -1,0 +1,42 @@
+<%= link_to "添加商品" ,new_admin_product_path %>
+<% if @product == "" %>
+  <%= say = "请添加商品" %>
+<% else %>
+<div class="table-c">
+  <table width="75%">
+    <tr>
+      <td style="color: blue">商品编号</td>
+      <td style="color: blue">商品名</td>
+      <td style="color: blue">商品图片</td>
+      <td style="color: blue">详细说明</td>
+      <td style="color: blue">商品价格</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <% @product.each do |p| %>
+      <tr>
+        <td><%= p.id %></td>
+        <td><%= p.name %></td>
+        <% images = p.product_images %>
+        <td><%= image_tag("/product_image/"+String(images[0].photo),height: '80', width: '120') %></td>
+        <td><%= p.note %></td>
+        <td><%= p.price %>￥</td>
+        <% if p.status == 1 %>
+        <td><%= link_to "下架" ,up_down_admin_product_path(p) %></td>
+        <% else %>
+        <td><%= link_to "上架" ,up_down_admin_product_path(p) %></td>
+        <% end %>
+        <td><%= link_to "修改" ,edit_admin_product_path(p) %></td>
+        <td><%= link_to "删除" ,admin_product_path(p),method: :delete, data: { confirm: "确定删除？" } %></td>
+        <td><%= link_to "图片管理" ,admin_product_images_path(:product_id => p.id) %></td>
+        <td><%= link_to "评论管理" ,admin_comments_path(:product_id => p.id) %></td>
+    </tr>
+    <% end %>
+  </table>
+</div>
+<% end %>
+<%=  will_paginate @product ,:style => " color :blue" %>
+<p>共有<%= @product.count %>条记录</p>

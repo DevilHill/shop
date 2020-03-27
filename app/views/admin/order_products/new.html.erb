@@ -1,0 +1,9 @@
+<%= form_for @order_product,  url: {:action => :create} do |f| %>
+<table>
+  <tr>
+    <td><%= f.hidden_field :order_id , :value => @order_id %></td>
+    <td><%= f.select :product_id , Product.all.collect{|p| [p.name,p.id] } %></td>
+    <td><%= f.submit(value= "提交") %></td>
+  </tr>
+</table>
+<% end %>

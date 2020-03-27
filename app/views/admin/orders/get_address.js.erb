@@ -1,0 +1,8 @@
+
+
+
+
+<%#= f.select :address_id, @address.collect{|i| [i.province, i.id]} %>
+$("#get_address").html("<%= j select_tag "order[address_id]", options_for_select(@address.collect{|p| [p.receiver, p.id]}) %>")
+
+

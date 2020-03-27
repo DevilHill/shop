@@ -1,0 +1,7 @@
+$("#img_cache").html("<%= j hidden_field_tag "product_hidden_image" ,@newfilename %>")
+if ($("#product_hidden_image").val() == ""){
+    $("#img_prev").src = "/images/icon/photo_icon.png";
+}else{
+    $("#img_prev").attr("src","/tmp_images/"+$("#product_hidden_image").val());
+}
+//$("#hidden_image").text(<%#= @newfilename %>)

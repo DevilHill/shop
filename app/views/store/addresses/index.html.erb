@@ -1,0 +1,43 @@
+当前位置->收货地址
+<div class="table-body">
+  <%= link_to "添加地址" ,new_store_address_path %>
+  <table>
+    <tr>
+      <td>省</td>
+      <td>市</td>
+      <td>区</td>
+      <td>详细地址</td>
+      <td>收货人</td>
+      <td>操作</td>
+    </tr>
+    <% @addresses.each do |a| %>
+    <tr>
+      <td><%= a.province %></td>
+      <td><%= a.city %></td>
+      <td><%= a.region %></td>
+      <td><%= a.detail %></td>
+      <td><%= a.receiver %></td>
+      <td><%= link_to "删除地址" ,store_address_path(a) , method: :delete , data: { confirm: "确定删除？" } %></td>
+    </tr>
+    <% end %>
+  </table>
+</div>
+<style>
+  .table-body{
+    margin: 100px;
+    /*border: solid 1px black;*/
+  }
+  .table-body table{
+    border: black 1px solid;
+    width: 100%;
+    mso-cellspacing: 0;
+    text-align: center;
+    border-collapse: collapse;
+    line-height: 30px;
+  }
+  .table-body table td{
+    border: black 1px solid;
+    margin: 0px;
+    padding: 0px;
+  }
+</style>
